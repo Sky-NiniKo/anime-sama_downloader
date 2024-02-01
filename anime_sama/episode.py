@@ -9,6 +9,7 @@ class Episode:
         self.index = index
 
         self.name = f"{season_name} - Episode {index:02}"
+        self.short_name = f"Ep {index}"
         self.best_player = None
 
     def get_best_player(self) -> str:
@@ -30,8 +31,10 @@ class Episode:
                 return
 
         for i in range(self.index, len(self.players) + self.index):
-            if self.players[i % len(self.players)] not in bans:
-                self.best_player = self.players[i % len(self.players)]
+            candiate = self.players[i % len(self.players)]
+
+            if all(ban not in candiate for ban in bans):
+                self.best_player = candiate
                 return
 
         print(f"WARNING: No player found for {self}")

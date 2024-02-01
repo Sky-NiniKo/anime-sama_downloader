@@ -1,16 +1,4 @@
-from pathlib import Path
+from defautl_config import *
 
-PREFER_VF = True
-DOWNLOAD_PATH = Path("~/Downloads/Anime-Sama")
-
-URL = "https://anime-sama.fr/"
-
-PLAYERS = {
-    "prefer": ["anime-sama", "sibnet", "sendvid"],
-    "ban": ["myvid"]
-}
-
-CONCURRENT_DOWNLOADS = {
-    "fragment": 3,
-    "video": 5
-}
+# Make your overwrites here
+# See defautl_config.py for default values

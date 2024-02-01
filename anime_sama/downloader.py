@@ -32,7 +32,8 @@ class TqdmYoutubeDL(tqdm):
 
 def download(episode: Episode, path: Path, concurrent_fragment_downloads=3, main_tqdm_bar=None):
     full_path = (path / episode.serie_name / episode.season_name / episode.name).expanduser()
-    with TqdmYoutubeDL(desc=episode.name, leave=not bool(main_tqdm_bar)) as tqdm_bar:
+
+    with TqdmYoutubeDL(desc=episode.short_name, leave=not bool(main_tqdm_bar)) as tqdm_bar:
         option = {
             'outtmpl': {'default': f'{full_path}.%(ext)s'},
             'concurrent_fragment_downloads': concurrent_fragment_downloads,
