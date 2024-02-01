@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "anime-sama"
+version = "0.1.0"
+description = "Download video from anime-sama.fr"
+authors = ["NiniKo <you@example.com>"]
+license = "GPLv3"
+readme = "README.md"
+packages = [{include = "anime_sama"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+yt-dlp = "^2023.12.30"
+httpx = "^0.26.0"
+tqdm = "^4.66.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
