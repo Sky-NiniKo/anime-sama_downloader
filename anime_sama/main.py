@@ -1,18 +1,21 @@
-import json
+import sys
 import asyncio
 from typing import TypeVar, List
 
 import config
 import downloader
-from anime_sama import AnimeSama
 from utils import safe_input
+from anime_sama import AnimeSama
 
 T = TypeVar("T")
 
 
 def print_selection(choices: list) -> None:
-    if len(choices) == 0: exit("No result")
-    if len(choices) == 1: return print(f"-> {choices[0]}")
+    if len(choices) == 0:
+        sys.exit("No result")
+    if len(choices) == 1:
+        print(f"-> {choices[0]}")
+        return
 
     for index, choice in enumerate(choices, start=1):
         print(f"{index}: {choice}")
@@ -31,7 +34,10 @@ def select_range_from(choices: List[T]) -> List[T]:
     if len(choices) == 1:
         return [choices[0]]
 
-    ints = safe_input(f"Choose a range [1-{len(choices)}]: ", lambda string: tuple(map(int, string.split("-"))))
+    ints = safe_input(
+        f"Choose a range [1-{len(choices)}]: ",
+        lambda string: tuple(map(int, string.split("-")))
+    )
     if len(ints) == 1:
         return [choices[ints[0] - 1]]
 
@@ -39,19 +45,19 @@ def select_range_from(choices: List[T]) -> List[T]:
 
 
 async def main():
-    catalogues = await AnimeSama(config.url).search(input("Anime name: "))
+    catalogues = await AnimeSama(config.URL).search(input("Anime name: "))
     catalogue = select_one_from(catalogues)
 
     seasons = await catalogue.seasons()
     season = select_one_from(seasons)
 
-    episodes = await season.episodes(perfer_vf=config.prefer_vf)
+    episodes = await season.episodes(perfer_vf=config.PREFER_VF)
     selected_episodes = select_range_from(episodes)
 
-    for episode in selected_episodes: 
-        episode.set_best_player(config.players["prefer"], config.players["ban"])
+    for episode in selected_episodes:
+        episode.set_best_player(config.PLAYERS["prefer"], config.PLAYERS["ban"])
 
-    downloader.multi_download(selected_episodes, config.download_path, config.concurrent_downloads)
+    downloader.multi_download(selected_episodes, config.DOWNLOAD_PATH, config.CONCURRENT_DOWNLOADS)
 
 
 asyncio.run(main())

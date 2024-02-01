@@ -1,4 +1,4 @@
-import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from yt_dlp import YoutubeDL
@@ -31,9 +31,10 @@ class TqdmYoutubeDL(tqdm):
 
 
 def download(episode: Episode, path: Path, concurrent_fragment_downloads=3, main_tqdm_bar=None):
+    full_path = (path / episode.serie_name / episode.season_name / episode.name).expanduser()
     with TqdmYoutubeDL(desc=episode.name, leave=not bool(main_tqdm_bar)) as tqdm_bar:
         option = {
-            'outtmpl': {'default': f'{(path / episode.serie_name / episode.season_name / episode.name).expanduser()}.%(ext)s'},
+            'outtmpl': {'default': f'{full_path}.%(ext)s'},
             'concurrent_fragment_downloads': concurrent_fragment_downloads,
             'progress_hooks': [tqdm_bar.hook],
             'logger': OnlyErrorLogger()
@@ -48,7 +49,7 @@ def download(episode: Episode, path: Path, concurrent_fragment_downloads=3, main
 
 def multi_download(episodes: list[Episode], path: Path, concurrent_downloads):
     with tqdm(total=len(episodes), unit="Ep") as tqdm_bar:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=concurrent_downloads["video"]) as executor:
+        with ThreadPoolExecutor(max_workers=concurrent_downloads["video"]) as executor:
             executor.map(
                 lambda episode: download(episode, path, concurrent_downloads["fragment"], tqdm_bar),
                 episodes

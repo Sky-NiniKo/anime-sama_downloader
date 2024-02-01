@@ -1,16 +1,16 @@
 from pathlib import Path
 
-prefer_vf = True
-download_path = Path("~/Downloads/Anime-Sama")
+PREFER_VF = True
+DOWNLOAD_PATH = Path("~/Downloads/Anime-Sama")
 
-url = "https://anime-sama.fr/"
+URL = "https://anime-sama.fr/"
 
-players = {
+PLAYERS = {
     "prefer": ["anime-sama", "sibnet", "sendvid"],
     "ban": ["myvid"]
 }
 
-concurrent_downloads = {
+CONCURRENT_DOWNLOADS = {
     "fragment": 3,
     "video": 5
 }

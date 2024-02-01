@@ -16,22 +16,28 @@ class Episode:
             self.set_best_player()
 
         return self.best_player
-    
-    def set_best_player(self, prefer_players: list[str] = [], ban_players: list[str] = []) -> None:
-        for prefer_player, player in product(prefer_players, self.players):
-            if prefer_player in player:
+
+    def set_best_player(self, prefers: list[str] = None, bans: list[str] = None) -> None:
+        if prefers is None:
+            prefers = []
+
+        if bans is None:
+            bans = []
+
+        for prefer, player in product(prefers, self.players):
+            if prefer in player:
                 self.best_player = player
                 return
-        
+
         for i in range(self.index, len(self.players) + self.index):
-            if self.players[i % len(self.players)] not in ban_players:
+            if self.players[i % len(self.players)] not in bans:
                 self.best_player = self.players[i % len(self.players)]
                 return
-        
+
         print(f"WARNING: No player found for {self}")
-    
+
     def __repr__(self):
         return f"Episode({self.season_name!r}, {self.index!r}, {self.best_player!r})"
-    
+
     def __str__(self):
         return self.name

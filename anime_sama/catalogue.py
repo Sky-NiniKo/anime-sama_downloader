@@ -1,5 +1,4 @@
 import httpx
-import asyncio
 
 from utils import find_pattern_in
 from season import Season
@@ -14,7 +13,11 @@ class Catalogue:
     async def seasons(self) -> list[Season]:
         response = await self.client.get(self.url)
 
-        seasons = (season.split(", ") for season in find_pattern_in(response.text, "\tpanneauAnime(\"", "vostfr\");"))
+        seasons = (
+            season.split(", ")
+            for season in
+            find_pattern_in(response.text, "\tpanneauAnime(\"", "vostfr\");")
+        )
 
         seasons = [
             Season(
@@ -28,7 +31,7 @@ class Catalogue:
 
         # await asyncio.gather(*(asyncio.create_task(season.post_init()) for season in seasons))
         return seasons
-    
+
     def __repr__(self):
         return f"Catalogue({self.url!r}, {self.name!r})"
 

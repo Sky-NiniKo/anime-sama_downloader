@@ -15,13 +15,13 @@ If you don't have poetry, `pip install poetry`. And if you don't have pip, intal
 You can customize the config in `anime_sama/config.py`
 
 ```yaml
-prefer_vf: If you want to download the french version (if available)
-download_path: Where to place downloaded videos
-url: url of anime-sama (You shouldn't touch that)
-players:
+PREFER_VF: If you want to download the french version (if available)
+DOWNLOAD_PATH: Where to place downloaded videos
+URL: url of anime-sama (You shouldn't touch that)
+PLAYERS:
     prefer: player to use if multiple are available (first in the list are prefer over the afters)
     ban: player to not use (even if that the only player)
-concurrent_downloads:
+CONCURRENT_DOWNLOADS:
     fragment: how many fragment of a video to download at once
     video: how many video to download at once
 ```

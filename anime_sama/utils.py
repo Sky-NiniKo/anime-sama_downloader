@@ -4,7 +4,8 @@ def find_pattern_in(text: str, start: str, end: str, with_pattern=False) -> list
     start_pos = text.find(start) + len(start)
     while start_pos != len(start)-1:
         end_pos = start_pos + text[start_pos:].find(end)
-        if end_pos == start_pos-1: break
+        if end_pos == start_pos-1:
+            break
 
         if with_pattern:
             found.append(text[start_pos - len(start):end_pos + len(end)])
