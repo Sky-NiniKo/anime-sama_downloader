@@ -1,0 +1,24 @@
+-e git+https://github.com/Sky-NiniKo/anime-sama_downloader.git@4fb71e1fb20e85ce20db53c46abed323dacf0768#egg=anime_sama
+anyio==4.2.0
+astroid==3.0.2
+Brotli==1.1.0
+certifi==2023.11.17
+charset-normalizer==3.3.2
+dill==0.3.8
+h11==0.14.0
+httpcore==1.0.2
+httpx==0.26.0
+idna==3.6
+isort==5.13.2
+mccabe==0.7.0
+mutagen==1.47.0
+platformdirs==4.2.0
+pycryptodomex==3.20.0
+pylint==3.0.3
+requests==2.31.0
+sniffio==1.3.0
+tomlkit==0.12.3
+tqdm==4.66.1
+urllib3==2.2.0
+websockets==12.0
+yt-dlp==2023.12.30

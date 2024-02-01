@@ -11,6 +11,8 @@ poetry run python anime_sama/main.py
 ```
 If you don't have poetry, `pip install poetry`. And if you don't have pip, intall Python.
 
+If you can't install poetry: `pip install -r requirements.txt` but be warn, it is not supported.
+
 ## Config
 You can customize the config in `anime_sama/config.py`
 
