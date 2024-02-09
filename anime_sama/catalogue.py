@@ -1,6 +1,7 @@
+import re
+
 import httpx
 
-from utils import find_pattern_in
 from season import Season
 
 class Catalogue:
@@ -13,20 +14,16 @@ class Catalogue:
     async def seasons(self) -> list[Season]:
         response = await self.client.get(self.url)
 
-        seasons = (
-            season.split(", ")
-            for season in
-            find_pattern_in(response.text, "\tpanneauAnime(\"", "vostfr\");")
-        )
+        seasons = re.findall(r'panneauAnime\("(.+?)", *"(.+?)vostfr"\);', response.text)[1:]
 
         seasons = [
             Season(
-                url=self.url + xpath[1:],
-                name=name[:-1],
+                url=self.url + link,
+                name=name,
                 serie_name=self.name,
                 client=self.client
             )
-            for name, xpath in seasons
+            for name, link in seasons
         ]
 
         # await asyncio.gather(*(asyncio.create_task(season.post_init()) for season in seasons))

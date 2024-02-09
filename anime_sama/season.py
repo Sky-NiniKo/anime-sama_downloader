@@ -1,6 +1,7 @@
+import re
+
 import httpx
 
-from utils import find_pattern_in
 from episode import Episode
 
 class Season:
@@ -25,20 +26,16 @@ class Season:
         page_url = self.vf_url if perfer_vf and self.has_vf else self.vostfr_url
         response = await self.client.get(page_url)
 
-        fileever_number = find_pattern_in(response.text, "'episodes.js?filever", "'")[0]
-        episodes_url = page_url + "episodes.js?filever" + fileever_number
+        episodes_url = page_url + re.search(r'episodes\.js\?filever=\d+', response.text).group(0)
 
         episodes_js = await self.client.get(episodes_url)
 
-        return [Episode(players, self.serie_name, self.name, index) for index, players in
-            enumerate(
-                zip(
-                    *((url.strip()[1:-1] for url in player.split(",")[:-1])
-                    for player
-                    in find_pattern_in(episodes_js.text, "[", "]"))
-                ),
-                start=1
-            )
+        players_list = episodes_js.text.split("[")[1:]
+        players_links = [re.findall(r"'(.+?)'", player) for player in players_list]
+
+        return [
+            Episode(players, self.serie_name, self.name, index)
+            for index, players in enumerate(zip(*players_links), start=1)
         ]
 
     def __repr__(self):

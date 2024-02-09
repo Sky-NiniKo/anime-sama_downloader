@@ -1,6 +1,7 @@
+import re
+
 import httpx
 
-from utils import find_pattern_in
 from catalogue import Catalogue
 
 class AnimeSama:
@@ -14,21 +15,14 @@ class AnimeSama:
             data={"query": query}
         )
 
-        xpaths = find_pattern_in(
-            response.text,
-            f"\"{self.site_url}catalogue/", '" '
-        )
-
-        names = find_pattern_in(
-            response.text,
-            "<h3 class=\"text-xs uppercase font-extrabold\">", "</h3>"
-        )
+        links = re.findall(r'href="(.+?)"', response.text)
+        names = re.findall(r'>(.+?)<\/h3>', response.text)
 
         return [
             Catalogue(
-                url=f"{self.site_url}catalogue/{xpath}/",
+                url=link,
                 name=name,
                 client=self.client
             )
-            for xpath, name in zip(xpaths, names)
+            for link, name in zip(links, names)
         ]
