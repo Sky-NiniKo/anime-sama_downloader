@@ -32,7 +32,10 @@ def print_selection(choices: list, print_choices=True) -> None:
 
     for index, choice in enumerate(choices, start=1):
         line_colors = "yellow" if index % 2 == 0 else None
-        print(colored(f"[{index:{len(str(len(choices)))}}]", "green"), colored(choice, line_colors))
+        print(
+            colored(f"[{index:{len(str(len(choices)))}}]", "green"),
+            colored(choice, line_colors),
+        )
 
 
 def select_one(choices: list[T], msg="Choose a number", print_choices=True) -> T:
@@ -50,13 +53,13 @@ def select_range(choices: list[T], msg="Choose a range", print_choices=True) -> 
         return [choices[0]]
 
     ints = safe_input(
-        f"{msg} {colored(f'[1-{len(choices)}]', 'green')}: {put_color("blue")}",
-        lambda string: tuple(map(int, string.split("-")))
+        f"{msg} {colored(f'[1-{len(choices)}]', 'green')}: {put_color('blue')}",
+        lambda string: tuple(map(int, string.split("-"))),
     )
     if len(ints) == 1:
         return [choices[ints[0] - 1]]
 
-    return choices[ints[0]-1:ints[1]]
+    return choices[ints[0] - 1 : ints[1]]
 
 
 def suppress_stop_iteration(*args: list[Iterable], defaut=None) -> iter:
