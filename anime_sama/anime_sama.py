@@ -1,7 +1,7 @@
 import re
 
 from termcolor import colored
-from yaspin import kbi_safe_yaspin
+from yaspin import yaspin
 
 from custom_client import CustomAsyncClient
 from catalogue import Catalogue
@@ -13,9 +13,7 @@ class AnimeSama:
         self.client = CustomAsyncClient()
 
     async def search(self, query: str) -> list[Catalogue]:
-        with kbi_safe_yaspin(
-            text=f"Searching for {colored(query, 'blue')}", color="cyan"
-        ):
+        with yaspin(text=f"Searching for {colored(query, 'blue')}", color="cyan"):
             response = await self.client.post(
                 f"{self.site_url}template-php/defaut/fetch.php", data={"query": query}
             )

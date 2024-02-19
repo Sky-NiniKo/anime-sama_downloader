@@ -2,7 +2,7 @@ import re
 
 import httpx
 from termcolor import colored
-from yaspin import kbi_safe_yaspin
+from yaspin import yaspin
 
 from custom_client import CustomAsyncClient
 from season import Season
@@ -16,7 +16,7 @@ class Catalogue:
         self.client = client or CustomAsyncClient()
 
     async def seasons(self) -> list[Season]:
-        with kbi_safe_yaspin(
+        with yaspin(
             text=f"Getting season list for {colored(self.name, 'blue')}", color="cyan"
         ):
             response = await self.client.get(self.url)

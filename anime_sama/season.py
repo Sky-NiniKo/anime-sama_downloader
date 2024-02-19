@@ -4,7 +4,7 @@ from itertools import zip_longest
 
 import httpx
 from termcolor import colored
-from yaspin import kbi_safe_yaspin
+from yaspin import yaspin
 
 from custom_client import CustomAsyncClient
 from episode import Episode, Players, Languages
@@ -24,7 +24,7 @@ class Season:
         self.client = client or CustomAsyncClient()
 
     async def episodes(self) -> list[Episode]:
-        with kbi_safe_yaspin(
+        with yaspin(
             text=f"Getting episode list for {colored(self.name, 'blue')}", color="cyan"
         ):
 

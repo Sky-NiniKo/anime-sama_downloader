@@ -4,7 +4,7 @@ from termcolor import colored
 
 import config
 import downloader
-from utils import safe_input, select_one, select_range, put_color
+from utils import safe_input, select_one, select_range, put_color, keyboard_inter
 from anime_sama import AnimeSama
 
 
@@ -38,4 +38,8 @@ async def main():
     )
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, asyncio.exceptions.CancelledError):
+        keyboard_inter()
