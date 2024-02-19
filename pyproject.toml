@@ -11,10 +11,14 @@ packages = [{include = "anime_sama"}]
 python = "^3.12"
 yt-dlp = "^2023.12.30"
 httpx = "^0.26.0"
+hishel = "^0.0.22"
 tqdm = "^4.66.1"
+yaspin = "^3.0.1"
+termcolor = "^2.4.0"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.0.3"
+black = "^24.2.0"
 
 
 [build-system]

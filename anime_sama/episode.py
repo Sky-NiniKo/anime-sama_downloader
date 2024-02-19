@@ -1,46 +1,103 @@
+import re
 from itertools import product
+from dataclasses import dataclass, field
+
+from termcolor import colored
+
+zero = re.match(r"\d", "0")
 
 
-class Episode:
-    def __init__(self, players: list[str], serie_name="", season_name="", index=1) -> None:
-        self.players = players
-        self.serie_name = serie_name
-        self.season_name = season_name
-        self.index = index
+@dataclass
+class Players:
+    availables: list[str] = field(default_factory=list)
+    _best: str = field(default=None, init=False)
+    index: int = field(default=1, init=False)
 
-        self.name = f"{season_name} - Episode {index:02}"
-        self.short_name = f"Ep {index}"
-        self.best_player = None
+    @property
+    def best(self) -> str:
+        if self._best is None:
+            self.set_best()
 
-    def get_best_player(self) -> str:
-        if self.best_player is None:
-            self.set_best_player()
+        return self._best
 
-        return self.best_player
+    def set_best(self, prefers: list[str] = None, bans: list[str] = None) -> None:
+        if not self.availables:
+            return
 
-    def set_best_player(self, prefers: list[str] = None, bans: list[str] = None) -> None:
         if prefers is None:
             prefers = []
 
         if bans is None:
             bans = []
 
-        for prefer, player in product(prefers, self.players):
+        for prefer, player in product(prefers, self.availables):
             if prefer in player:
-                self.best_player = player
+                self._best = player
                 return
 
-        for i in range(self.index, len(self.players) + self.index):
-            candiate = self.players[i % len(self.players)]
+        for i in range(self.index, len(self.availables) + self.index):
+            candiate = self.availables[i % len(self.availables)]
 
             if all(ban not in candiate for ban in bans):
-                self.best_player = candiate
+                self._best = candiate
                 return
 
-        print(f"WARNING: No player found for {self}")
+        print(colored(f"WARNING: No player found for {self}", "yellow"))
 
-    def __repr__(self):
-        return f"Episode({self.season_name!r}, {self.index!r}, {self.best_player!r})"
+
+@dataclass
+class Languages:
+    french: Players
+    original: Players
+
+    prefer_french: bool = field(default=False, init=False)
+
+    def __post_init__(self):
+        self.has_vf = bool(self.french.availables)
+        self.availables = (self.french, self.original)
+
+    @property
+    def best(self) -> str:
+        return (
+            self.french._best
+            if self.prefer_french and self.has_vf
+            else self.original._best
+        )
+
+    def set_best(self, *args, **kwargs):
+        for players in self.availables:
+            players.set_best(*args, **kwargs)
+
+
+@dataclass
+class Episode:
+    languages: Languages
+
+    serie_name: str = ""
+    season_name: str = ""
+    _index: int = 1
+
+    def __post_init__(self) -> None:
+        self.index = self._index
+
+        self.season_number = int((re.search(r"\d+", self.season_name) or zero).group(0))
+
+        self.name = f"{self.season_name} - Episode {self.index:02}"
+        self.short_name = f"{self.serie_name} S{self.season_number:02}E{self.index:02}"
+
+    @property
+    def index(self) -> int:
+        return self._index
+
+    @index.setter
+    def index(self, value: int):
+        self._index = value
+        for players in self.languages.availables:
+            players.index = self._index
 
     def __str__(self):
         return self.name
+
+
+if __name__ == "__main__":
+    Episode(Languages(Players(), Players()))

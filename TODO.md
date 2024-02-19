@@ -1,0 +1,10 @@
+- [X] Search
+- [X] Download
+- [X] Play
+- [ ] Menu
+- [ ] Ani-skip
+- [ ] Resume play (history)
+- [ ] MAL sync
+- [ ] Auto-download at start-up
+- [ ] Planning
+- [ ] Discord presence
