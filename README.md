@@ -1,17 +1,36 @@
 # Anime-Sama Downloader
 Download video from anime-sama.fr
 
-# How to run
+# Requirements
+- Python 3.11 or higher
+- yt-dlp
+- git
+
+# Installation
 ```bash
 git clone https://github.com/Sky-NiniKo/anime-sama_downloader.git
 cd anime-sama_downloader
+```
 
+If you don't have poetry, `pip install poetry`.
+```bash
 poetry install
+```
+
+If you can't install poetry, but be warn, it is not supported:
+```bash
+pip install -r requirements.txt
+```
+
+# Run
+Poetry:
+```bash
 poetry run python anime_sama/main.py
 ```
-If you don't have poetry, `pip install poetry`. And if you don't have pip, intall Python.
-
-If you can't install poetry: `pip install -r requirements.txt` but be warn, it is not supported.
+Otherwise:
+```bash
+python anime_sama/main.py
+```
 
 ## Config
 You can customize the config in `anime_sama/config.py`
